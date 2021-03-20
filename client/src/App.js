@@ -1,13 +1,13 @@
-import ErrorSnackbar from "./components/ErrorSnackbar";
+import { Box } from "@material-ui/core";
+import HomePage from "./components/HomePage";
 import Navbar from "./components/Navbar";
-import ErrorProvider from "./components/providers/ErrorProvider";
 
 function App() {
   return (
-    <ErrorProvider>
+    <Box display="flex" flexDirection="column" height="100vh">
       <Navbar />
-      <ErrorSnackbar />
-    </ErrorProvider>
+      <HomePage />
+    </Box>
   );
 }
 
