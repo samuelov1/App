@@ -1,32 +1,27 @@
-import React from "react";
-import { Box, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
-
-import OptionsMenu from "./OptionsMenu";
-
-const useStyle = makeStyles({
-  header: {
-    alignItems: "center",
-    marginTop: 60,
-    padding: "10px 10px"
-  },
-  headerTitle: {
-    fontWeight: "bold"
-  },
-  flexSpacer: {
-    flex: 1
-  }
-});
+import { Box, IconButton, Tooltip, Typography } from "@material-ui/core";
+import { Delete, FilterList } from "@material-ui/icons";
 
 const ListHeader = () => {
-  const classes = useStyle();
   return (
-    <Box className={classes.header} display="flex">
-      <Typography className={classes.headerTitle} variant="h5">
-        Tasks
-      </Typography>
-      <Box className={classes.flexSpacer} />
-      <OptionsMenu />
+    <Box
+      padding="15px"
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+    >
+      <Typography variant="h5">Missions</Typography>
+      <Box>
+        <Tooltip title="Delete Completed" arrow>
+          <IconButton aria-label="delete button">
+            <Delete />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Hide Completed" arrow>
+          <IconButton aria-label="sort button">
+            <FilterList />
+          </IconButton>
+        </Tooltip>
+      </Box>
     </Box>
   );
 };

@@ -1,31 +1,44 @@
-import React from "react";
-import { makeStyles } from "@material-ui/styles";
-import { Container } from "@material-ui/core";
+import React, { useState } from "react";
+import { Fab, makeStyles, Paper, Box } from "@material-ui/core";
 
+import FlexOverflowWrapper from "./FlexOverflowWrapper";
 import ListHeader from "./ListHeader";
-import TaskList from "./TaskList";
-import AddTask from "./AddTask";
-import ListSortingPanel from "./ListSortingPanel";
-import FilterProvider from "./providers/FilterProvider";
+import MissionList from "./MissionList";
+import MissionForm from "./MissionForm";
+import { Add } from "@material-ui/icons";
 
-const useStyle = makeStyles({
-  container: {
-    marginTop: 60
-  }
+const useStyles = makeStyles({
+  root: {
+    flex: 1,
+    padding: "20px",
+    display: "flex",
+    flexDirection: "column",
+  },
 });
 
 const ListContainer = () => {
-  const classes = useStyle();
+  const classes = useStyles();
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   return (
-    <Container className={classes.container} maxWidth="md">
-      <FilterProvider>
+    <>
+      <Paper className={classes.root}>
         <ListHeader />
-        <ListSortingPanel />
-        <TaskList />
-      </FilterProvider>
-      <AddTask />
-    </Container>
+        <FlexOverflowWrapper>
+          <MissionList />
+        </FlexOverflowWrapper>
+        <Box display="flex" flexDirection="row-reverse" mt="15px">
+          <Fab
+            color="secondary"
+            aria-label="add"
+            onClick={() => setIsFormOpen(true)}
+          >
+            <Add />
+          </Fab>
+        </Box>
+      </Paper>
+      <MissionForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
+    </>
   );
 };
 
