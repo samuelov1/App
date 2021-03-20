@@ -61,3 +61,27 @@ export const insertMission = async (req, res) => {
     });
   }
 };
+
+export const deleteMission = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const filter = { _id: ObjectId(id) };
+
+    const deletedMission = await DB.findOneAndDelete(collectionName, filter);
+
+    if (!deletedMission) {
+      return res.status(404).send({
+        status: "error",
+        message: `Could not find mission with id ${id}`
+      });
+    }
+
+    res.status(200).send({ id });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      status: "error",
+      message: "Could not delete mission"
+    });
+  }
+};
