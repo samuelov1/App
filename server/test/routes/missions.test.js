@@ -175,4 +175,46 @@ describe("Missions route", () => {
         });
     });
   });
+
+  describe("DELETE: /missions/:id", () => {
+    it("Should delete mission with given id", (done) => {
+      const id = expectedMissions[0]._id;
+
+      chai
+        .request(app)
+        .delete(`/missions/${id}`)
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res.body.id).to.equal(id);
+          expect(res).to.have.status(200);
+          done();
+        });
+    });
+
+    it("Should return NotFoundError if no missions with given Id was found", (done) => {
+      const id = new ObjectId();
+
+      chai
+        .request(app)
+        .delete(`/missions/${id}`)
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res).to.have.status(404);
+          done();
+        });
+    });
+
+    it("Should return ValidationError if invalid id is sent", (done) => {
+      const id = "invalidId";
+
+      chai
+        .request(app)
+        .delete(`/missions/${id}`)
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res).to.have.status(422);
+          done();
+        });
+    });
+  });
 });
