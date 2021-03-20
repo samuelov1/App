@@ -22,3 +22,21 @@ export const updateMissionSchema = joi
     })
   })
   .unknown(true);
+
+export const insertMissionSchema = joi
+  .object()
+  .keys({
+    body: joi.object({
+      content: joi.string().required(),
+      isCompleted: joi.boolean().default(false),
+      createdAt: joi.date().default(new Date()),
+      coordinates: joi
+        .object()
+        .keys({
+          lat: joi.number().required(),
+          long: joi.number().required()
+        })
+        .required()
+    })
+  })
+  .unknown(true);

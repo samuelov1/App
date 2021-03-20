@@ -46,3 +46,18 @@ export const updateMission = async (req, res) => {
     });
   }
 };
+
+export const insertMission = async (req, res) => {
+  try {
+    const missionToInsert = req.body;
+    const insertedMission = await DB.insertOne(collectionName, missionToInsert);
+
+    res.status(201).send(insertedMission);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      status: "error",
+      message: "Could not insert mission"
+    });
+  }
+};
