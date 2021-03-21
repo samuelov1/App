@@ -85,3 +85,24 @@ export const deleteMission = async (req, res) => {
     });
   }
 };
+
+export const deleteMultipleMissions = async (req, res) => {
+  try {
+    const ids = req.body.ids.map((id) => ObjectId(id));
+    const filter = { _id: { $in: ids } };
+
+    const result = await DB.deleteMany(collectionName, filter);
+
+    if (!result.ok) {
+      throw new Error("MongoDB deleteMany command did not excecute correctly");
+    }
+
+    res.status(200).send({ deletedCount: result.n });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      status: "error",
+      message: "Could not delete mission"
+    });
+  }
+};

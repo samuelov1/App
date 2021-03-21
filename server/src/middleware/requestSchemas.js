@@ -53,3 +53,18 @@ export const missionIdSchema = joi
     })
   })
   .unknown(true);
+
+export const missionIdListSchema = joi
+  .object()
+  .keys({
+    body: joi.object({
+      ids: joi.array().items(
+        joi
+          .string()
+          .alphanum()
+          .length(24)
+          .required()
+      )
+    })
+  })
+  .unknown(true);
