@@ -175,4 +175,95 @@ describe("Missions route", () => {
         });
     });
   });
+
+  describe("DELETE: /missions/:id", () => {
+    it("Should delete mission with given id", (done) => {
+      const id = expectedMissions[0]._id;
+
+      chai
+        .request(app)
+        .delete(`/missions/${id}`)
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res.body.id).to.equal(id);
+          expect(res).to.have.status(200);
+          done();
+        });
+    });
+
+    it("Should return NotFoundError if no missions with given Id was found", (done) => {
+      const id = new ObjectId();
+
+      chai
+        .request(app)
+        .delete(`/missions/${id}`)
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res).to.have.status(404);
+          done();
+        });
+    });
+
+    it("Should return ValidationError if invalid id is sent", (done) => {
+      const id = "invalidId";
+
+      chai
+        .request(app)
+        .delete(`/missions/${id}`)
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res).to.have.status(422);
+          done();
+        });
+    });
+  });
+
+  describe("DELETE: /missions", () => {
+    it("Should delete all missions given in body", (done) => {
+      const ids = expectedMissions.map((mission) => mission._id);
+
+      chai
+        .request(app)
+        .delete(`/missions`)
+        .send({ ids })
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res.body.deletedCount).to.equal(ids.length);
+          expect(res).to.have.status(200);
+          done();
+        });
+    });
+
+    it("Should return lower deletedCount if not all missions have been deleted", (done) => {
+      const ids = expectedMissions.map((mission) => mission._id);
+      ids.push(new ObjectId());
+
+      chai
+        .request(app)
+        .delete(`/missions`)
+        .send({ ids })
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res).to.have.status(200);
+          expect(res.body.deletedCount).to.equal(ids.length - 1);
+          done();
+        });
+    });
+
+    it("Should return ValidationError if invalid id list is sent", (done) => {
+      const ids = [];
+      ids.push(expectedMissions.map((mission) => mission._id));
+      ids.push("invalid id");
+
+      chai
+        .request(app)
+        .delete(`/missions`)
+        .send({ ids })
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res).to.have.status(422);
+          done();
+        });
+    });
+  });
 });
