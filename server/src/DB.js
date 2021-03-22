@@ -45,6 +45,13 @@ class DB {
     return result.value;
   }
 
+  static async deleteMany(collectionName, filter = {}, options = {}) {
+    const { result } = await this.db
+      .collection(collectionName)
+      .deleteMany(filter, options);
+    return result;
+  }
+
   static async insertOne(collectionName, data, options = {}) {
     const result = await this.db
       .collection(collectionName)

@@ -97,4 +97,173 @@ describe("Missions route", () => {
         });
     });
   });
+
+  describe("POST: /missions", () => {
+    it("Should insert mission", (done) => {
+      const missionToInsert = {
+        isCompleted: false,
+        content: "New Content",
+        createdAt: new Date(),
+        coordinates: {
+          lat: Math.random() * 100,
+          long: Math.random() * 100
+        }
+      };
+
+      const expected = utils.parseData(missionToInsert);
+
+      chai
+        .request(app)
+        .post("/missions")
+        .send(missionToInsert)
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res.body._id).to.exist;
+          expect(res.body.createdAt).to.exist;
+          expected._id = res.body._id;
+          expected.createdAt = res.body.createdAt;
+          expect(res.body).to.deep.equal(expected);
+          expect(res).to.have.status(201);
+          done();
+        });
+    });
+
+    it("Should set isCompleted: false, createdAt:[currentDate] as defaults if not given", (done) => {
+      const missionToInsert = {
+        content: "New Content",
+        coordinates: {
+          lat: Math.random() * 100,
+          long: Math.random() * 100
+        }
+      };
+
+      chai
+        .request(app)
+        .post("/missions")
+        .send(missionToInsert)
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res.body.isCompleted).to.be.false;
+
+          const createdAtTimestamp = new Date(res.body.createdAt).getTime();
+          const expectTimestamp = new Date().getTime();
+          const delta = 100000;
+          expect(createdAtTimestamp).to.be.closeTo(expectTimestamp, delta);
+
+          expect(res).to.have.status(201);
+          done();
+        });
+    });
+
+    it("Should return ValidationError if invalid body is sent", (done) => {
+      const invalidMission = {
+        content: "New Content",
+        coordinates: {
+          lat: Math.random() * 100,
+          long: "invalid longtitude"
+        }
+      };
+
+      chai
+        .request(app)
+        .post("/missions")
+        .send(invalidMission)
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res).to.have.status(422);
+          done();
+        });
+    });
+  });
+
+  describe("DELETE: /missions/:id", () => {
+    it("Should delete mission with given id", (done) => {
+      const id = expectedMissions[0]._id;
+
+      chai
+        .request(app)
+        .delete(`/missions/${id}`)
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res.body.id).to.equal(id);
+          expect(res).to.have.status(200);
+          done();
+        });
+    });
+
+    it("Should return NotFoundError if no missions with given Id was found", (done) => {
+      const id = new ObjectId();
+
+      chai
+        .request(app)
+        .delete(`/missions/${id}`)
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res).to.have.status(404);
+          done();
+        });
+    });
+
+    it("Should return ValidationError if invalid id is sent", (done) => {
+      const id = "invalidId";
+
+      chai
+        .request(app)
+        .delete(`/missions/${id}`)
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res).to.have.status(422);
+          done();
+        });
+    });
+  });
+
+  describe("DELETE: /missions", () => {
+    it("Should delete all missions given in body", (done) => {
+      const ids = expectedMissions.map((mission) => mission._id);
+
+      chai
+        .request(app)
+        .delete(`/missions`)
+        .send({ ids })
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res.body.deletedCount).to.equal(ids.length);
+          expect(res).to.have.status(200);
+          done();
+        });
+    });
+
+    it("Should return lower deletedCount if not all missions have been deleted", (done) => {
+      const ids = expectedMissions.map((mission) => mission._id);
+      ids.push(new ObjectId());
+
+      chai
+        .request(app)
+        .delete(`/missions`)
+        .send({ ids })
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res).to.have.status(200);
+          expect(res.body.deletedCount).to.equal(ids.length - 1);
+          done();
+        });
+    });
+
+    it("Should return ValidationError if invalid id list is sent", (done) => {
+      const ids = [];
+      ids.push(expectedMissions.map((mission) => mission._id));
+      ids.push("invalid id");
+
+      chai
+        .request(app)
+        .delete(`/missions`)
+        .send({ ids })
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res).to.have.status(422);
+          done();
+        });
+    });
+  });
 });
