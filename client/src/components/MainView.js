@@ -5,11 +5,11 @@ const useStyles = makeStyles({
   root: {
     flex: 1,
     margin: 0,
-    width: "100%",
-  },
+    width: "100%"
+  }
 });
 
-const HomePage = () => {
+const MainView = () => {
   const classes = useStyles();
 
   return (
@@ -25,4 +25,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default MainView;
