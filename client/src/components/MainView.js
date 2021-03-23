@@ -1,5 +1,6 @@
 import { Grid, makeStyles } from "@material-ui/core";
 import ListContainer from "./ListContainer";
+import TableContainer from "./TableContainer";
 
 const useStyles = makeStyles({
   root: {
@@ -18,7 +19,9 @@ const MainView = () => {
         <ListContainer />
       </Grid>
       <Grid container item direction="row" xs={8}>
-        <Grid item xs={12}></Grid>
+        <Grid item container xs={12}>
+          <TableContainer />
+        </Grid>
         <Grid item xs={12}></Grid>
       </Grid>
     </Grid>
