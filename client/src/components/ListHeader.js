@@ -1,5 +1,6 @@
 import { Box, IconButton, Tooltip, Typography } from "@material-ui/core";
-import { Delete, FilterList } from "@material-ui/icons";
+import { Delete } from "@material-ui/icons";
+import FilterButton from "./FilterButton";
 
 const ListHeader = () => {
   return (
@@ -16,11 +17,7 @@ const ListHeader = () => {
             <Delete />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Hide Completed" arrow>
-          <IconButton aria-label="sort button">
-            <FilterList />
-          </IconButton>
-        </Tooltip>
+        <FilterButton />
       </Box>
     </Box>
   );

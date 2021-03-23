@@ -10,3 +10,7 @@ export const getFilteredMissions = (store) => {
     ? missions
     : missions.filter((mission) => !mission.isCompleted);
 };
+
+export const getIsLoading = (store) => store.isLoading;
+
+export const getIsError = (store) => store.isError;
