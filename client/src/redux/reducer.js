@@ -2,7 +2,8 @@ const initialState = {
   missions: [],
   showCompletedMissions: true,
   isLoading: false,
-  isError: false
+  isError: false,
+  clickedCoordinates: {}
 };
 
 const reducer = (state = initialState, action) => {
@@ -27,6 +28,9 @@ const reducer = (state = initialState, action) => {
     }
     case "SET_SHOW_COMPLETED": {
       return { ...state, showCompletedMissions: action.payload };
+    }
+    case "SET_CLICKED_COORDS": {
+      return { ...state, clickedCoordinates: action.payload };
     }
     default:
       return state;

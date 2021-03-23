@@ -14,3 +14,5 @@ export const getFilteredMissions = (store) => {
 export const getIsLoading = (store) => store.isLoading;
 
 export const getIsError = (store) => store.isError;
+
+export const getClickedCoordinates = (store) => store.clickedCoordinates;

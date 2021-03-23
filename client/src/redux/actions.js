@@ -22,3 +22,8 @@ export const setShowCompletedMissions = (showCompleted) => ({
   type: "SET_SHOW_COMPLETED",
   payload: showCompleted
 });
+
+export const setClickedCoordinates = (lat, long) => ({
+  type: "SET_CLICKED_COORDS",
+  payload: {lat, long}
+});
