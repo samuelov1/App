@@ -1,43 +1,39 @@
 import joi from "joi";
 
+const idSchema = joi
+  .string()
+  .alphanum()
+  .length(24)
+  .required();
+
+const missionSchema = joi.object({
+  content: joi.string().required(),
+  isCompleted: joi.boolean().default(false),
+  createdAt: joi.date().default(new Date()),
+  coordinates: joi
+    .object()
+    .keys({
+      lat: joi.number().required(),
+      long: joi.number().required()
+    })
+    .required()
+});
+
 export const updateMissionSchema = joi
   .object()
   .keys({
-    body: joi.object({
-      _id: joi
-        .string()
-        .alphanum()
-        .length(24)
-        .required(),
-      content: joi.string().required(),
-      isCompleted: joi.boolean().required(),
-      createdAt: joi.date().required(),
-      coordinates: joi
-        .object()
-        .keys({
-          lat: joi.number().required(),
-          long: joi.number().required()
-        })
-        .required()
-    })
+    body: joi
+      .object({
+        _id: idSchema
+      })
+      .concat(missionSchema)
   })
   .unknown(true);
 
 export const insertMissionSchema = joi
   .object()
   .keys({
-    body: joi.object({
-      content: joi.string().required(),
-      isCompleted: joi.boolean().default(false),
-      createdAt: joi.date().default(new Date()),
-      coordinates: joi
-        .object()
-        .keys({
-          lat: joi.number().required(),
-          long: joi.number().required()
-        })
-        .required()
-    })
+    body: missionSchema
   })
   .unknown(true);
 
@@ -45,11 +41,7 @@ export const missionIdSchema = joi
   .object()
   .keys({
     params: joi.object({
-      id: joi
-        .string()
-        .alphanum()
-        .length(24)
-        .required()
+      id: idSchema
     })
   })
   .unknown(true);
@@ -58,13 +50,7 @@ export const missionIdListSchema = joi
   .object()
   .keys({
     body: joi.object({
-      ids: joi.array().items(
-        joi
-          .string()
-          .alphanum()
-          .length(24)
-          .required()
-      )
+      ids: joi.array().items(idSchema)
     })
   })
   .unknown(true);
