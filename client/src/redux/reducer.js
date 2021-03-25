@@ -28,6 +28,14 @@ const reducer = (state = initialState, action) => {
     case "SET_SHOW_COMPLETED": {
       return { ...state, showCompletedMissions: action.payload };
     }
+    case "DELETE_MISSIONS": {
+      const ids = action.payload;
+      const updatedMissions = state.missions.filter(
+        (mission) => !ids.find((id) => mission._id === id)
+      );
+
+      return { ...state, missions: updatedMissions };
+    }
     default:
       return state;
   }

@@ -22,3 +22,8 @@ export const setShowCompletedMissions = (showCompleted) => ({
   type: "SET_SHOW_COMPLETED",
   payload: showCompleted
 });
+
+export const deleteMissions = (ids) => ({
+  type: "DELETE_MISSIONS",
+  payload: ids
+});

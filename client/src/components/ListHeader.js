@@ -1,6 +1,6 @@
-import { Box, IconButton, Tooltip, Typography } from "@material-ui/core";
-import { Delete } from "@material-ui/icons";
+import { Box, Typography } from "@material-ui/core";
 import FilterButton from "./FilterButton";
+import DeleteButton from "./DeleteButton";
 
 const ListHeader = () => {
   return (
@@ -12,11 +12,7 @@ const ListHeader = () => {
     >
       <Typography variant="h5">Missions</Typography>
       <Box>
-        <Tooltip title="Delete Completed" arrow>
-          <IconButton aria-label="delete button">
-            <Delete />
-          </IconButton>
-        </Tooltip>
+        <DeleteButton />
         <FilterButton />
       </Box>
     </Box>
