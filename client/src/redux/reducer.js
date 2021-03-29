@@ -32,6 +32,9 @@ const reducer = (state = initialState, action) => {
     case "SET_CLICKED_COORDS": {
       return { ...state, clickedCoordinates: action.payload };
     }
+    case "ADD_MISSION": {
+      return { ...state, missions: [...state.missions, action.payload] };
+    }
     default:
       return state;
   }

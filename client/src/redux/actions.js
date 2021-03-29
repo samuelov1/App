@@ -25,5 +25,10 @@ export const setShowCompletedMissions = (showCompleted) => ({
 
 export const setClickedCoordinates = (lat, long) => ({
   type: "SET_CLICKED_COORDS",
-  payload: {lat, long}
+  payload: { lat, long }
+});
+
+export const addMission = (missionToAdd) => ({
+  type: "ADD_MISSION",
+  payload: missionToAdd
 });
