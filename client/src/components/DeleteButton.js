@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IconButton, Tooltip } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
+import Tooltip from "./Tooltip";
 import { getAllMissions } from "../redux/selectors";
 import { deleteMissions } from "../redux/actions";
 
