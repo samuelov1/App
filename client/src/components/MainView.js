@@ -1,30 +1,23 @@
-import { Grid, makeStyles } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import ListContainer from "./ListContainer";
 import MapContainer from "./MapContainer";
-
-const useStyles = makeStyles({
-  root: {
-    flex: 1,
-    margin: 0,
-    width: "100%"
-  }
-});
+import TableContainer from "./TableContainer";
 
 const MainView = () => {
-  const classes = useStyles();
-
   return (
-    <Grid className={classes.root} container spacing={3}>
-      <Grid item container xs={4}>
+    <Box display="flex" alignItems="stretch" height="100%">
+      <Box margin="10px" flex="1">
         <ListContainer />
-      </Grid>
-      <Grid className={classes.root} container direction="row" spacing={3}>
-        <Grid container item xs={12}></Grid>
-        <Grid container item xs={12}>
+      </Box>
+      <Box display="flex" flexDirection="column" flex="2">
+        <Box margin="10px" flex="1">
+          <TableContainer />
+        </Box>
+        <Box margin="10px" flex="1">
           <MapContainer />
-        </Grid>
-      </Grid>
-    </Grid>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

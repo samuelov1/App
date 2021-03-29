@@ -8,7 +8,7 @@ import MissionForm from "./MissionForm";
 
 const useStyles = makeStyles({
   root: {
-    flex: 1,
+    height: "100%",
     padding: "20px",
     display: "flex",
     flexDirection: "column",

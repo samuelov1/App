@@ -18,7 +18,7 @@ import Overlay from "./ol/layers/Overlay";
 
 const useStyles = makeStyles({
   root: {
-    flex: 1,
+    height: "100%",
     display: "flex",
     flexDirection: "column"
   },
