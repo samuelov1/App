@@ -1,12 +1,11 @@
 import React, { useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { makeStyles, Paper, Box } from "@material-ui/core";
+import { makeStyles, Paper, Box, Typography } from "@material-ui/core";
 
 import { getFilteredMissions, getClickedCoordinates } from "../redux/selectors";
 import { setClickedCoordinates } from "../redux/actions";
 
 import OSM from "ol/source/OSM";
-import { fromLonLat } from "ol/proj";
 import Map from "./ol/map/Map";
 import TileLayer from "./ol/layers/TileLayer";
 import VectorLayer from "./ol/layers/VectorLayer";
@@ -25,11 +24,13 @@ const useStyles = makeStyles({
   },
   tooltip: {
     padding: "10px",
-    transform: "translate(-50%, -125%)"
+    maxWidth: "400px",
+    transform: "translate(-50%, -125%)",
+    wordWrap: "break-word"
   }
 });
 
-const israelCoordinates = [31.732656992968614, 34.81840863714199];
+const israelCoordinates = { long: 31.732656992968614, lat: 34.81840863714199 };
 
 const MapContainer = () => {
   const classes = useStyles();
@@ -39,12 +40,12 @@ const MapContainer = () => {
   const [hoveredId, setHoveredId] = useState(null);
 
   const features = missions.map((mission) => {
-    const coordinates = fromLonLat([
-      mission.coordinates.long,
-      mission.coordinates.lat
-    ]);
     return (
-      <Point key={mission._id} id={mission._id} coordinates={coordinates} />
+      <Point
+        key={mission._id}
+        id={mission._id}
+        coordinates={mission.coordinates}
+      />
     );
   });
 
@@ -58,36 +59,16 @@ const MapContainer = () => {
     [missions, hoveredId]
   );
 
-  const hoveredCoordinates = useMemo(() => {
-    if (hoveredMission) {
-      const { lat, long } = hoveredMission.coordinates;
-      return fromLonLat([long, lat]);
-    }
-  }, [hoveredMission]);
-
   return (
     <Paper className={classes.root}>
-      <Map
-        zoom={4}
-        center={fromLonLat([israelCoordinates[1], israelCoordinates[0]])}
-      >
+      <Map zoom={4} center={israelCoordinates}>
         <TileLayer source={new OSM()} />
         <VectorLayer>
           {features}
-          {clickedCoodinates.lat && clickedCoodinates.long && (
-            <Point
-              id="clicked_point"
-              coordinates={fromLonLat([
-                clickedCoodinates.long,
-                clickedCoodinates.lat
-              ])}
-            />
-          )}
+          <Point id="clicked_point" coordinates={clickedCoodinates} />
         </VectorLayer>
-        <Overlay position={hoveredCoordinates}>
-          {hoveredMission && (
-            <Paper className={classes.tooltip}>{hoveredMission.content}</Paper>
-          )}
+        <Overlay position={hoveredMission?.coordinates}>
+          <Paper className={classes.tooltip}>{hoveredMission?.content}</Paper>
         </Overlay>
         <FullscreenControl />
         <ClickControl onClick={handleClick} />

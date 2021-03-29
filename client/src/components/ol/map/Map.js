@@ -4,12 +4,13 @@ import * as ol from "ol";
 import { makeStyles } from "@material-ui/core";
 import MapContext from "./MapContext";
 import { defaults as defaultControls } from "ol/control";
+import { fromLonLat } from "ol/proj";
 
 const useStyles = makeStyles({
   map: {
     width: "100%",
-    height: "100%",
-  },
+    height: "100%"
+  }
 });
 
 const Map = ({ children, zoom, center }) => {
@@ -18,11 +19,12 @@ const Map = ({ children, zoom, center }) => {
   const [map, setMap] = useState(null);
 
   useEffect(() => {
+    const centerCoordinates = fromLonLat([center.long, center.lat]);
     const options = {
-      view: new ol.View({ zoom, center }),
+      view: new ol.View({ zoom, center: centerCoordinates }),
       layers: [],
       controls: defaultControls(),
-      overlays: [],
+      overlays: []
     };
 
     const mapObject = new ol.Map(options);

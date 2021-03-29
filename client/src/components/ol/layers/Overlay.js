@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import MapContext from "../map/MapContext";
 import OlOverlay from "ol/Overlay";
+import { fromLonLat } from "ol/proj";
 
 const Overlay = ({ children, position }) => {
   const { map } = useContext(MapContext);
@@ -11,7 +12,6 @@ const Overlay = ({ children, position }) => {
     if (!map) return;
 
     const initialOverlay = new OlOverlay({
-      autoPan: true,
       element: overlayRef.current
     });
 
@@ -24,10 +24,14 @@ const Overlay = ({ children, position }) => {
   }, [map]);
 
   useEffect(() => {
-    if (overlay) {
-      overlay.setPosition(position);
+    overlayRef.current.style.display = "none";
+
+    if (overlay && position) {
+      const coordinates = fromLonLat([position.long, position.lat]);
+      overlay.setPosition(coordinates);
+      overlayRef.current.style.display = "";
     }
-  }, [position]);
+  }, [position, overlay]);
 
   return <div ref={overlayRef}>{children}</div>;
 };

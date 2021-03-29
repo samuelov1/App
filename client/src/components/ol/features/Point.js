@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import Feature from "ol/Feature";
 import OlPoint from "ol/geom/Point";
 import LayerContext from "../layers/LayerContext";
+import { fromLonLat } from "ol/proj";
 
 const Point = ({ id, coordinates }) => {
   const { layer } = useContext(LayerContext);
@@ -9,7 +10,7 @@ const Point = ({ id, coordinates }) => {
   useEffect(() => {
     if (!layer) return;
 
-    const point = new OlPoint(coordinates);
+    const point = new OlPoint([]);
     const pointFeature = new Feature(point);
     pointFeature.setId(id);
 
@@ -24,11 +25,18 @@ const Point = ({ id, coordinates }) => {
   }, [layer]);
 
   useEffect(() => {
-    layer
-      ?.getSource()
-      .getFeatureById(id)
-      .getGeometry()
-      .setCoordinates(coordinates);
+    if (layer && coordinates) {
+      const translatesCoordinates = fromLonLat([
+        coordinates.long,
+        coordinates.lat
+      ]);
+
+      layer
+        .getSource()
+        .getFeatureById(id)
+        .getGeometry()
+        .setCoordinates(translatesCoordinates);
+    }
   }, [coordinates]);
 
   return null;
