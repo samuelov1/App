@@ -1,15 +1,16 @@
 import { Grid, makeStyles } from "@material-ui/core";
 import ListContainer from "./ListContainer";
+import MapContainer from "./MapContainer";
 
 const useStyles = makeStyles({
   root: {
     flex: 1,
     margin: 0,
-    width: "100%",
-  },
+    width: "100%"
+  }
 });
 
-const HomePage = () => {
+const MainView = () => {
   const classes = useStyles();
 
   return (
@@ -17,12 +18,14 @@ const HomePage = () => {
       <Grid item container xs={4}>
         <ListContainer />
       </Grid>
-      <Grid container item direction="row" xs={8}>
-        <Grid item xs={12}></Grid>
-        <Grid item xs={12}></Grid>
+      <Grid className={classes.root} container direction="row" spacing={3}>
+        <Grid container item xs={12}></Grid>
+        <Grid container item xs={12}>
+          <MapContainer />
+        </Grid>
       </Grid>
     </Grid>
   );
 };
 
-export default HomePage;
+export default MainView;

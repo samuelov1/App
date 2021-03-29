@@ -1,19 +1,27 @@
+import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 import {
-  Box,
   List,
   ListItem,
   ListItemIcon,
   Checkbox,
   ListItemText,
-  Divider,
+  Divider
 } from "@material-ui/core";
 import { Alert, AlertTitle } from "@material-ui/lab";
+import {
+  getFilteredMissions,
+  getIsError,
+  getIsLoading
+} from "../redux/selectors";
+import { updateMission } from "../redux/actions";
 import Loader from "./Loader";
 
 const MissionList = () => {
-  const missions = [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5];
-  const isError = false;
-  const isLoading = false;
+  const dispatch = useDispatch();
+  const missions = useSelector(getFilteredMissions);
+  const isLoading = useSelector(getIsLoading);
+  const isError = useSelector(getIsError);
 
   if (isLoading) return <Loader />;
 
@@ -26,27 +34,45 @@ const MissionList = () => {
     );
   }
 
+  const toggleMissionCompleted = async (mission) => {
+    try {
+      const missionToUpdate = { ...mission, isCompleted: !mission.isCompleted };
+      const response = await axios.put("/missions", missionToUpdate);
+      const updatedMission = response.data;
+
+      dispatch(updateMission(updatedMission));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <List>
-      {missions.map((value, index) => {
+      {missions.map((mission) => {
+        const { lat, long } = mission.coordinates;
+        const secondaryText = `${new Date(
+          mission.createdAt
+        ).toLocaleDateString()} at [${lat}, ${long}]`;
+
         return (
-          <>
-            <ListItem key={index} role={undefined} dense button>
+          <div key={mission._id}>
+            <ListItem role={undefined} dense button>
               <ListItemIcon>
                 <Checkbox
                   edge="start"
-                  checked={index % 2 === 0}
+                  checked={mission.isCompleted}
                   tabIndex={-1}
                   disableRipple
+                  onChange={() => toggleMissionCompleted(mission)}
                 />
               </ListItemIcon>
               <ListItemText
-                primary={`Line item ${index + 1}`}
-                secondary={new Date().toLocaleDateString()}
+                primary={mission.content}
+                secondary={secondaryText}
               />
             </ListItem>
             <Divider light />
-          </>
+          </div>
         );
       })}
     </List>
