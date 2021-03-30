@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { makeStyles, Paper, Box } from "@material-ui/core";
 import { PagingState, IntegratedPaging } from "@devexpress/dx-react-grid";
@@ -25,10 +25,6 @@ const TableContainer = () => {
   const classes = useStyles();
   const missions = useSelector(getFilteredMissions);
 
-  const rows = useMemo(() => {
-    return missions;
-  }, [missions]);
-
   const [columns] = useState([
     { name: "content", title: "Content" },
     {
@@ -54,7 +50,7 @@ const TableContainer = () => {
       <Box ml="10px">
         <FilterButton />
       </Box>
-      <Grid rows={rows} columns={columns}>
+      <Grid rows={missions} columns={columns}>
         <PagingState defaultCurrentPage={0} pageSize={6} />
         <IntegratedPaging />
         <Table height="auto" />

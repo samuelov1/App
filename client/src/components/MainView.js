@@ -6,7 +6,7 @@ import TableContainer from "./TableContainer";
 const MainView = () => {
   return (
     <Box display="flex" alignItems="stretch" height="100%">
-      <Box margin="10px" flex="1">
+      <Box margin="10px" flex="1" width="400px">
         <ListContainer />
       </Box>
       <Box display="flex" flexDirection="column" flex="2">

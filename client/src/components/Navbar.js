@@ -5,14 +5,14 @@ import {
   Toolbar,
   Typography,
   Switch,
-  Tooltip,
+  Tooltip
 } from "@material-ui/core";
 import { CustomThemeContext } from "./providers/CustomThemeProvider";
 
 const useStyles = makeStyles({
   spacer: {
-    flex: 1,
-  },
+    flex: 1
+  }
 });
 
 const Navbar = () => {
