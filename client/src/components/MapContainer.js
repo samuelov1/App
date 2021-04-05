@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { makeStyles, Paper, Box, Typography } from "@material-ui/core";
+import { makeStyles, Paper } from "@material-ui/core";
 
 import { getFilteredMissions, getClickedCoordinates } from "../redux/selectors";
 import { setClickedCoordinates } from "../redux/actions";
@@ -18,7 +18,7 @@ import Overlay from "./ol/layers/Overlay";
 
 const useStyles = makeStyles({
   root: {
-    flex: 1,
+    height: "100%",
     display: "flex",
     flexDirection: "column"
   },
@@ -39,15 +39,19 @@ const MapContainer = () => {
   const clickedCoodinates = useSelector(getClickedCoordinates);
   const [hoveredId, setHoveredId] = useState(null);
 
-  const features = missions.map((mission) => {
-    return (
-      <Point
-        key={mission._id}
-        id={mission._id}
-        coordinates={mission.coordinates}
-      />
-    );
-  });
+  const features = useMemo(
+    () =>
+      missions.map((mission) => {
+        return (
+          <Point
+            key={mission._id}
+            id={mission._id}
+            coordinates={mission.coordinates}
+          />
+        );
+      }),
+    [missions]
+  );
 
   const handleClick = (coordinates) => {
     const [long, lat] = coordinates;

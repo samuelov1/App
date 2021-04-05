@@ -6,7 +6,11 @@ import {
   ListItemIcon,
   Checkbox,
   ListItemText,
-  Divider
+  Divider,
+  makeStyles,
+  Tooltip,
+  ListItemSecondaryAction,
+  IconButton
 } from "@material-ui/core";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import {
@@ -14,10 +18,28 @@ import {
   getIsError,
   getIsLoading
 } from "../redux/selectors";
-import { updateMission } from "../redux/actions";
+import { updateMission, deleteMissions } from "../redux/actions";
 import Loader from "./Loader";
+import { Delete } from "@material-ui/icons";
+
+const useStyles = makeStyles({
+  completed: {
+    textDecoration: "line-through"
+  },
+  listItem: {
+    "&:hover": {
+      "& $deleteButton": {
+        visibility: "visible"
+      }
+    }
+  },
+  deleteButton: {
+    visibility: "hidden"
+  }
+});
 
 const MissionList = () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const missions = useSelector(getFilteredMissions);
   const isLoading = useSelector(getIsLoading);
@@ -46,6 +68,17 @@ const MissionList = () => {
     }
   };
 
+  const deleteMission = async (id) => {
+    try {
+      const response = await axios.delete(`/missions/${id}`);
+      const deletedMissionId = response.data.id;
+
+      dispatch(deleteMissions([deletedMissionId]));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <List>
       {missions.map((mission) => {
@@ -56,7 +89,12 @@ const MissionList = () => {
 
         return (
           <div key={mission._id}>
-            <ListItem role={undefined} dense button>
+            <ListItem
+              ContainerProps={{ className: classes.listItem }}
+              role={undefined}
+              dense
+              button
+            >
               <ListItemIcon>
                 <Checkbox
                   edge="start"
@@ -67,9 +105,24 @@ const MissionList = () => {
                 />
               </ListItemIcon>
               <ListItemText
+                classes={{
+                  primary: mission.isCompleted ? classes.completed : null
+                }}
                 primary={mission.content}
                 secondary={secondaryText}
               />
+              <ListItemSecondaryAction className={classes.deleteButton}>
+                <Tooltip title="Delete Mission" arrow>
+                  <span>
+                    <IconButton
+                      aria-label="delete button"
+                      onClick={() => deleteMission(mission._id)}
+                    >
+                      <Delete />
+                    </IconButton>
+                  </span>
+                </Tooltip>
+              </ListItemSecondaryAction>
             </ListItem>
             <Divider light />
           </div>
