@@ -40,11 +40,17 @@ const MissionForm = () => {
         value={content}
         onChange={({ target }) => setContent(target.value)}
       />
-      <Box mt="15px" display="flex">
+      <Box mt="15px" display="flex" justifyContent="space-between">
         {clickedCoordinates.lat && clickedCoordinates.long ? (
           <>
-            <Typography>Latitude: {clickedCoordinates.lat}</Typography>
-            <Typography>Longtitude: {clickedCoordinates.long}</Typography>
+            <Typography>
+              Latitude:
+              <br /> {clickedCoordinates.lat}
+            </Typography>
+            <Typography>
+              Longtitude:
+              <br /> {clickedCoordinates.long}
+            </Typography>
           </>
         ) : (
           <Typography color="error">

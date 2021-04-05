@@ -53,7 +53,7 @@ const TableContainer = () => {
       <Grid rows={missions} columns={columns}>
         <PagingState defaultCurrentPage={0} pageSize={6} />
         <IntegratedPaging />
-        <Table height="auto" />
+        <Table height="auto"/>
         <TableHeaderRow />
         <PagingPanel />
       </Grid>
