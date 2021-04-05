@@ -4,15 +4,15 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Switch,
-  Tooltip,
+  Switch
 } from "@material-ui/core";
+import Tooltip from "./Tooltip";
 import { CustomThemeContext } from "./providers/CustomThemeProvider";
 
 const useStyles = makeStyles({
   spacer: {
-    flex: 1,
-  },
+    flex: 1
+  }
 });
 
 const Navbar = () => {
@@ -26,7 +26,7 @@ const Navbar = () => {
           Missions App
         </Typography>
         <div className={classes.spacer} />
-        <Tooltip title={`Switch to ${darkMode ? "Dark" : "Light"} mode`} arrow>
+        <Tooltip title={`Switch to ${darkMode ? "Light" : "Dark"} mode`} arrow>
           <Switch checked={darkMode} onChange={() => toggleDarkMode()} />
         </Tooltip>
       </Toolbar>

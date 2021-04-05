@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IconButton, Tooltip } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import { FilterList } from "@material-ui/icons";
+import Tooltip from "./Tooltip";
 import { getShowCompletedMissions, getAllMissions } from "../redux/selectors";
 import { setShowCompletedMissions } from "../redux/actions";
 
